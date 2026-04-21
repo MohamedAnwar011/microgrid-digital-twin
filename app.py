@@ -224,7 +224,7 @@ if run_btn:
     st.subheader("AI Fault Detection Performance")
     fig3, ax3 = plt.subplots(figsize=(12, 3))
     ax3.plot(live_df['timestamp'], live_df['fault_code'], label="Actual Physical Fault", color="black", linewidth=4, alpha=0.3)
-    ax3.plot(live_df['timestamp'], live_df['ai_prediction'], label="AI Model Prediction", color="red", linestyle="--", linewidth=2)
+    ax3.plot(live_df['timestamp'], live_df['ai_prediction'], label="AI Model Prediction", color="red", linewidth=2)
     ax3.set_yticks(range(5))
     ax3.set_yticklabels(FAULT_NAMES)
     ax3.set_ylabel("System Status")
