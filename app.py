@@ -72,7 +72,7 @@ def run_interactive_simulation(sag_depth, overload_mult, spike_mult, starting_so
     battery_cap, battery_max, diesel_ramp, current_diesel_kw = 100.0, 50.0, 10.0, 0.0
 
     # Inject one of each fault type across the day
-    FAULT_SCHEDULE = [(200, 10, 1), (500, 10, 2), (800, 10, 3), (1100, 10, 4)]
+    FAULT_SCHEDULE = [(200, 5, 1), (480, 5, 2), (800, 5, 3), (1100, 5, 4)]
     training_data = []
 
     for t in range(total_minutes):
