@@ -5,6 +5,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import joblib
 import os
+import streamlit.components.v1 as components
+from pyvis.network import Network
 
 # =====================================================================
 # 1. CONFIGURATION & MODEL LOADING
@@ -199,6 +201,41 @@ if run_btn:
 
     # 3. Plot Results
     st.success("Simulation Complete. AI Inference Applied.")
+    
+    # --- ADDED: INTERACTIVE 3D ANIMATED GRID ---
+    st.subheader("Interactive Grid Topology (Modified IEEE 9-Bus Ring)")
+    st.markdown("Drag the buses around, or use your mouse wheel to zoom in and out.")
+    
+    net = Network(height="400px", width="100%", bgcolor="#0e1117", font_color="white")
+    net.barnes_hut(gravity=-3000)
+    
+    for i in range(1, 10):
+        net.add_node(i, label=f"Bus {i}", shape="dot", color="#3498db", size=15)
+    
+    net.add_node("Grid", label="Ext Grid", shape="square", color="#e74c3c", size=20)
+    net.add_node("Diesel", label="Diesel Gen", shape="triangle", color="#f39c12", size=20)
+    net.add_node("Battery", label="Battery", shape="database", color="#2ecc71", size=20)
+    net.add_node("Solar", label="Solar PV", shape="triangle", color="#f1c40f", size=20)
+    
+    net.add_edge("Grid", 1, color="#e74c3c", width=3)
+    net.add_edge("Diesel", 2, color="#f39c12", width=3)
+    net.add_edge("Battery", 4, color="#2ecc71", width=3)
+    net.add_edge("Solar", 8, color="#f1c40f", width=3)
+    
+    edges = [(1, 4), (4, 5), (5, 6), (3, 6), (6, 7), (7, 8), (2, 8), (8, 9), (9, 4)]
+    for src, dst in edges:
+        net.add_edge(src, dst, color="#7f8c8d", width=2)
+    
+    try:
+        net.save_graph("interactive_grid.html")
+        HtmlFile = open("interactive_grid.html", 'r', encoding='utf-8')
+        source_code = HtmlFile.read() 
+        components.html(source_code, height=450)
+    except Exception as e:
+        st.error(f"Could not generate interactive graph: {e}")
+    
+    st.divider()
+    # -------------------------------------------
     
     col1, col2 = st.columns(2)
     
